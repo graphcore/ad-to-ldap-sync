@@ -1,0 +1,26 @@
+---
+settings:
+  total_change_threshold: 50
+  deletions_change_threshold: 30
+  additions_change_threshold: 30
+  monitoring_log_file: "test_monitoring.log"
+  log_file: "test_ad_to_ldap_sync.log"
+  log_file_level: "DEBUG"
+openldap:
+  server: "thing"
+  port: 1234
+  get_info: 1
+  ciphers: "ALL"
+  ssl:
+    enabled: true
+    validate: "CERT_NOTHING"
+    version: "PROTOCOL_SCHMOTOCOL_TLSv1"
+  bind_user: "uid=something,ou=People,dc=example,dc=com"
+  bind_pass: "somepass"
+  schema:
+    base: "dc=example,dc=com"
+    mounts: "ou=Mounts"
+    users: "ou=People"
+    objects:
+      user:
+        name: "uid"

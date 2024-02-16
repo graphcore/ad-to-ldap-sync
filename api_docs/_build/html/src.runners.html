@@ -1,0 +1,1546 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>src.runners package &#8212; MS AD &lt;-&gt; OpenLDAP sync v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MS AD &lt;-&gt; OpenLDAP sync v1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">src.runners package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="src-runners-package">
+<h1>src.runners package<a class="headerlink" href="#src-runners-package" title="Permalink to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="module-src.runners.group_sync">
+<span id="src-runners-group-sync-module"></span><h2>src.runners.group_sync module<a class="headerlink" href="#module-src.runners.group_sync" title="Permalink to this heading">¶</a></h2>
+<p>This module is used to synchronize groups between MS AD to OpenLDAP.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.runners.group_sync.</span></span><span class="sig-name descname"><span class="pre">AdLdapGroupSync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basic_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ldap_connections</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ldap3.core.connection.Connection</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Groups from a specific OU’s are synchronised (created/modified) between the
+directories.</p>
+<ul class="simple">
+<li><p>There are country control methods implemented for data export control.</p></li>
+<li><p>All nested groups are flattened.</p></li>
+<li><p>Protection is in place so that large change sets requires manual intervention.</p></li>
+<li><p>Regardless of group or user synchronisation, users are checked against an
+exception lookup table.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basic_config</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary containing all the basic configuration settings.</p></li>
+<li><p><strong>ldap_connections</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Connection</em><em>]</em>) – A dictionary containing all the LDAP connections.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._add_missing_openldap_groups">
+<span class="sig-name descname"><span class="pre">_add_missing_openldap_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">openldap_group_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ad_group_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._add_missing_openldap_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add missing MS AD groups to OpenLDAP.</p>
+<p>Loops over the current MS AD groups and checks if they are in OpenLDAP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>openldap_group_dictionary</strong> – Dictionary of all the OpenLDAP groups.</p></li>
+<li><p><strong>ad_group_dictionary</strong> – Dictionary of all the MS AD groups.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NO RETURN. Create a new group if required.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>–</p>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_add_missing_openldap_groups</span><span class="p">(</span>
+<span class="go">    openldap_group_dictionary={},</span>
+<span class="go">    ad_group_dictionary={</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;id&quot;: 123,</span>
+<span class="go">            &quot;dn&quot;: &quot;CN=test_group,OU=Groups,DC=example,DC=com&quot;,</span>
+<span class="go">            &quot;names&quot;: {</span>
+<span class="go">                &quot;CN=John Doe,OU=User Accounts,DC=example,DC=com&quot;,</span>
+<span class="go">                &quot;CN=Jane Doe,OU=User Accounts,DC=example,DC=com&quot;,</span>
+<span class="go">            },</span>
+<span class="go">            &quot;server_type&quot;: &quot;ad&quot;,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">self._new_ldap_group</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._build_sync_group_list">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_build_sync_group_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_group_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">second_group_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._build_sync_group_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a list of valid groups to synchronize.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>first_group_dict</strong> – Either the MS AD or OpenLDAP group dictionary.</p></li>
+<li><p><strong>second_group_dict</strong> – Either the MS AD or OpenLDAP group dictionary.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of valid groups to synchronize.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_build_sync_group_list</span><span class="p">(</span>
+<span class="go">    {</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;id&quot;: 123,</span>
+<span class="go">            &quot;dn&quot;: &quot;CN=test_group,OU=Groups,DC=ai&quot;,</span>
+<span class="go">            &quot;names&quot;: {</span>
+<span class="go">                &quot;CN=John Doe,OU=Users,DC=ai&quot;,</span>
+<span class="go">                &quot;CN=Jane Doe,OU=Users,DC=ai&quot;,</span>
+<span class="go">            },</span>
+<span class="go">            &quot;server_type&quot;: &quot;ad&quot;,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;id&quot;: 123,</span>
+<span class="go">            &quot;dn&quot;: &quot;cn=test_group,ou=Group,dc=ai&quot;,</span>
+<span class="go">            &quot;names&quot;: [&quot;johnd&quot;, &quot;janed&quot;],</span>
+<span class="go">            &quot;server_type&quot;: &quot;openldap&quot;,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">)</span>
+<span class="go">[&#39;test_group&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._check_ad_object_type">
+<span class="sig-name descname"><span class="pre">_check_ad_object_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ad_object</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._check_ad_object_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the object is a user or a group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ad_object</strong> – The input object to test against.</p></li>
+<li><p><strong>object_type</strong> – The type to test for. Either “user” or “group”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the ad_object == object_type, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_check_ad_object_type</span><span class="p">(</span>
+<span class="go">    &quot;CN=John Doe,OU=Users,DC=example,DC=com&quot;, object_type=&quot;user&quot;</span>
+<span class="go">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._check_country_control">
+<span class="sig-name descname"><span class="pre">_check_country_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">account_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_sync_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._check_country_control" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a user should be in a group based on country control.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>account_data</strong> – Dictionary of relevant account data for the user to test against.</p></li>
+<li><p><strong>valid_sync_group</strong> – Group to test against.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>False if this group has country control and the user isn’t authorized.
+True in any other case.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_check_country_control</span><span class="p">(</span>
+<span class="go">    {&quot;sAMAccountName&quot;: &quot;johnd&quot;, &quot;country_code&quot;: &quot;TW&quot;, &quot;account_active&quot;: True},</span>
+<span class="go">    &quot;test_group&quot;,</span>
+<span class="go">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._check_override_required">
+<span class="sig-name descname"><span class="pre">_check_override_required</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_operations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._check_override_required" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine if override is required for this group change set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>destination_list</strong> – The list of users in this group.</p></li>
+<li><p><strong>destination_operations</strong> – The list of operations for this group.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if override is required for this group change set.
+False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_check_override_required</span><span class="p">(</span>
+<span class="go">    [&quot;test_user&quot;],</span>
+<span class="go">    {</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;additions&quot;: [],</span>
+<span class="go">            &quot;deletions&quot;: [&quot;johnd&quot;],</span>
+<span class="go">            &quot;override_required&quot;: False,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    &quot;test_group&quot;,</span>
+<span class="go">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._check_process_changes">
+<span class="sig-name descname"><span class="pre">_check_process_changes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination_group_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_operations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._check_process_changes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the operations for this group should be processed or not
+based on the relevant thresholds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>destination_group_dict</strong> – Dictionary of all the groups and their users</p></li>
+<li><p><strong>group</strong> – The group to operate on.</p></li>
+<li><p><strong>group_operations</strong> – The operations to perform.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if none of the thresholds are breached, else False.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_check_process_changes</span><span class="p">(</span>
+<span class="go">    {</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;id&quot;: 123,</span>
+<span class="go">            &quot;dn&quot;: &quot;cn=hr,ou=Group,dc=ai&quot;,</span>
+<span class="go">            &quot;names&quot;: [&quot;janed&quot;],</span>
+<span class="go">            &quot;server_type&quot;: &quot;openldap&quot;,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    &quot;test_group&quot;,</span>
+<span class="go">    {</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;additions&quot;: [],</span>
+<span class="go">            &quot;deletions&quot;: [&quot;johnd&quot;],</span>
+<span class="go">            &quot;override_required&quot;: False,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._create_group_dictionary">
+<span class="sig-name descname"><span class="pre">_create_group_dictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._create_group_dictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the group dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – This maps to the config section of the required server.</p></li>
+<li><p><strong>search_results</strong> – The group search from the LDAP connection results.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with all the groups, their ID’s and the members of the group.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, Any]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_create_group_dictionary</span><span class="p">(</span>
+<span class="go">    &quot;ad&quot;,</span>
+<span class="go">    [</span>
+<span class="go">        {</span>
+<span class="go">            &quot;dn&quot;: &quot;CN=test_group,OU=Groups,DC=example,DC=com&quot;,</span>
+<span class="go">            &quot;attributes&quot;: {</span>
+<span class="go">                &quot;objectClass&quot;: [&quot;top&quot;, &quot;group&quot;],</span>
+<span class="go">                &quot;cn&quot;: &quot;example_group&quot;,</span>
+<span class="go">                &quot;member&quot;: [</span>
+<span class="go">                    &quot;CN=John Doe,OU=User Accounts,DC=example,DC=com&quot;,</span>
+<span class="go">                    &quot;CN=Jane Doe,OU=User Accounts,DC=example,DC=com&quot;,</span>
+<span class="go">                ],</span>
+<span class="go">                &quot;distinguishedName&quot;: &quot;CN=test_group,OU=Groups,DC=example,DC=com&quot;,</span>
+<span class="go">                &quot;name&quot;: &quot;example_group&quot;,</span>
+<span class="go">                &quot;sAMAccountName&quot;: &quot;example_group&quot;,</span>
+<span class="go">                &quot;gidNumber&quot;: 1186,</span>
+<span class="go">            },</span>
+<span class="go">        }</span>
+<span class="go">    ]</span>
+<span class="go">)</span>
+<span class="go">{</span>
+<span class="go">    &quot;test_group&quot;: {</span>
+<span class="go">        &quot;id&quot;: 123,</span>
+<span class="go">        &quot;dn&quot;: &quot;CN=test_group,OU=Groups,DC=example,DC=com&quot;,</span>
+<span class="go">        &quot;names&quot;: {</span>
+<span class="go">            &quot;CN=John Doe,OU=User Accounts,DC=example,DC=com&quot;,</span>
+<span class="go">            &quot;CN=Jane Doe,OU=User Accounts,DC=example,DC=com&quot;,</span>
+<span class="go">        },</span>
+<span class="go">        &quot;server_type&quot;: &quot;ad&quot;,</span>
+<span class="go">    }</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_create_group_dictionary</span><span class="p">(</span>
+<span class="go">    &quot;openldap&quot;,</span>
+<span class="go">    [</span>
+<span class="go">        {</span>
+<span class="go">            &quot;dn&quot;: &quot;cn=test_group,ou=Group,dc=example,dc=com&quot;,</span>
+<span class="go">            &quot;attributes&quot;: {</span>
+<span class="go">                &quot;gidNumber&quot;: 123,</span>
+<span class="go">                &quot;cn&quot;: [&quot;test_group&quot;],</span>
+<span class="go">                &quot;objectClass&quot;: [&quot;posixGroup&quot;, &quot;top&quot;],</span>
+<span class="go">                &quot;memberUid&quot;: [&quot;johnd&quot;, &quot;janed&quot;],</span>
+<span class="go">            }</span>
+<span class="go">        }</span>
+<span class="go">    ]</span>
+<span class="go">)</span>
+<span class="go">{</span>
+<span class="go">    &quot;test_group&quot;: {</span>
+<span class="go">        &quot;id&quot;: 123,</span>
+<span class="go">        &quot;dn&quot;: &quot;cn=test_group,ou=Group,dc=example,dc=com&quot;,</span>
+<span class="go">        &quot;names&quot;: [&quot;johnd&quot;, &quot;janed&quot;],</span>
+<span class="go">        &quot;server_type&quot;: &quot;openldap&quot;,</span>
+<span class="go">    }</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._determine_change_percent">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_determine_change_percent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_operations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._determine_change_percent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the relevant change percentages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>destination_list</strong> – The list of users in this group.</p></li>
+<li><p><strong>destination_operations</strong> – The list of operations for this group.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary of all the relevant change percentages and numbers.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, int]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_determine_change_percent</span><span class="p">(</span>
+<span class="go">    [&quot;test_user&quot;],</span>
+<span class="go">    {</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;additions&quot;: [],</span>
+<span class="go">            &quot;deletions&quot;: [],</span>
+<span class="go">            &quot;override_required&quot;: False,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    &quot;test_group&quot;,</span>
+<span class="go">)</span>
+<span class="go">{</span>
+<span class="go">    &quot;original_len&quot;: 1,</span>
+<span class="go">    &quot;deletions_len&quot;: 0,</span>
+<span class="go">    &quot;additions_len&quot;: 0,</span>
+<span class="go">    &quot;total_change_size&quot;: 0,</span>
+<span class="go">    &quot;total_change_percent&quot;: 0,</span>
+<span class="go">    &quot;deletions_change_percent&quot;: 0,</span>
+<span class="go">    &quot;additions_change_percent&quot;: 0,</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._determine_group_id">
+<span class="sig-name descname"><span class="pre">_determine_group_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._determine_group_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the group ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – This maps to the config section of the required server.</p></li>
+<li><p><strong>group</strong> – The whole group object from the LDAP connection results.</p></li>
+<li><p><strong>group_name</strong> – The group name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The correct group ID.
+If there is no group ID found, <cite>-1</cite> will be returned.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_determine_group_id</span><span class="p">(</span>
+<span class="go">    &quot;openldap&quot;, {&quot;attributes&quot;: {&quot;cn&quot;: [&quot;test_group&quot;]}}, &quot;test_group&quot;</span>
+<span class="go">)</span>
+<span class="go">-1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._determine_group_members">
+<span class="sig-name descname"><span class="pre">_determine_group_members</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._determine_group_members" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the group members.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – This maps to the config section of the required server.</p></li>
+<li><p><strong>group</strong> – The whole group object from the LDAP connection results.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>All members of the group.
+If there are no members found, an empty list will be returned.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_determine_group_members</span><span class="p">(</span><span class="s2">&quot;openldap&quot;</span><span class="p">,</span> <span class="s2">&quot;test_group&quot;</span><span class="p">)</span>
+<span class="go">{</span>
+<span class="go">    &quot;dn&quot;: &quot;cn=test_group,ou=Group,dc=example,dc=com&quot;,</span>
+<span class="go">    &quot;attributes&quot;: {</span>
+<span class="go">        &quot;memberUid&quot;: [&quot;test_group&quot;],</span>
+<span class="go">        &quot;gidNumber&quot;: 123,</span>
+<span class="go">        &quot;cn&quot;: [&quot;test_group&quot;],</span>
+<span class="go">    },</span>
+<span class="go">}</span>
+<span class="go">[&quot;johnd&quot;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._determine_group_name">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_determine_group_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_name_object</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._determine_group_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the group name to use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>group_name_object</strong> – The group name from the LDAP connection results.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The correct group name.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_determine_group_name</span><span class="p">(</span><span class="s2">&quot;ad-ldap-sync-test&quot;</span><span class="p">)</span>
+<span class="go">ad-ldap-sync-test</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._determine_user_base">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_determine_user_base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_base</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._determine_user_base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Figure out what the correct user base should be for future searches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> – The specific configuration for this server type.</p></li>
+<li><p><strong>server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – This maps to the config section of the required server.</p></li>
+<li><p><strong>user_base</strong> – The base string for the user.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The correct user base for the specific server.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_determine_user_base</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_config</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">],</span> <span class="s2">&quot;ad&quot;</span><span class="p">)</span>
+<span class="go">ou=Company,dc=example,dc=com</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._find_user_in_source_dict">
+<span class="sig-name descname"><span class="pre">_find_user_in_source_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_member</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_sync_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._find_user_in_source_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if a user is in the source dictionary.
+:param source_dict: The input dictionary to search against.
+:param destination_member: The user to test against.
+:param valid_sync_group: Group to test against.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the user is found in the source dictionary.
+False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_find_user_in_source_dict</span><span class="p">(</span>
+<span class="go">    {</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;id&quot;: 123,</span>
+<span class="go">            &quot;dn&quot;: &quot;cn=test_group,ou=Group,dc=example,dc=com&quot;,</span>
+<span class="go">            &quot;names&quot;: [],</span>
+<span class="go">            &quot;server_type&quot;: &quot;openldap&quot;,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    &quot;johnd&quot;,</span>
+<span class="go">    &quot;test_group&quot;,</span>
+<span class="go">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._flatten_nested_group">
+<span class="sig-name descname"><span class="pre">_flatten_nested_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">called_groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_members</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._flatten_nested_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flatten nested groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>called_groups</strong> – A list of all the groups that have already been called by this method.</p></li>
+<li><p><strong>group_members</strong> – A list of all the members in the group to flatten.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The set of users only from all the nested groups.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>set[str]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_flatten_nested_group</span><span class="p">(</span>
+<span class="go">    [&quot;CN=test_group,OU=Linux,OU=Groups,OU=Company,DC=example,DC=com&quot;],</span>
+<span class="go">    group_members=[</span>
+<span class="go">        &quot;CN=2nd_level_group,OU=Groups,DC=example,DC=com&quot;,</span>
+<span class="go">        &quot;CN=John Doe,OU=Users,DC=example,DC=com&quot;,</span>
+<span class="go">    ],</span>
+<span class="go">)</span>
+<span class="go">{&#39;CN=John Doe,OU=Users,DC=example,DC=com&#39;}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._generate_additions">
+<span class="sig-name descname"><span class="pre">_generate_additions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_sync_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._generate_additions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate all the additions for this group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_dict</strong> – The input dictionary to search against.</p></li>
+<li><p><strong>destination_dict</strong> – The destination dictionary to test against.</p></li>
+<li><p><strong>valid_sync_group</strong> – Group to test against.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of additions for this group.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_additions</span><span class="p">(</span>
+<span class="go">    {</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;id&quot;: 123,</span>
+<span class="go">            &quot;dn&quot;: &quot;cn=test_group,ou=Group,dc=example,dc=com&quot;,</span>
+<span class="go">            &quot;names&quot;: [],</span>
+<span class="go">            &quot;server_type&quot;: &quot;openldap&quot;,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        {</span>
+<span class="go">            &quot;id&quot;: 123,</span>
+<span class="go">            &quot;dn&quot;: &quot;CN=test_group,OU=Groups,DC=example,DC=com&quot;,</span>
+<span class="go">            &quot;names&quot;: {</span>
+<span class="go">                &quot;CN=Jane Doe,OU=Users,DC=example,DC=com&quot;,</span>
+<span class="go">                &quot;CN=John Doe,OU=Users,DC=example,DC=com&quot;,</span>
+<span class="go">            },</span>
+<span class="go">            &quot;server_type&quot;: &quot;ad&quot;,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    [&quot;test_group&quot;],</span>
+<span class="go">)</span>
+<span class="go">[&quot;janed&quot;, &quot;johnd&quot;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._generate_deletions">
+<span class="sig-name descname"><span class="pre">_generate_deletions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_sync_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._generate_deletions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate all the deletions for this group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_dict</strong> – The input dictionary to search against.</p></li>
+<li><p><strong>destination_dict</strong> – The destination dictionary to test against.</p></li>
+<li><p><strong>valid_sync_group</strong> – Group to test against.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of deletions for this group.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_deletions</span><span class="p">(</span>
+<span class="go">    {</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;id&quot;: 123,</span>
+<span class="go">            &quot;dn&quot;: &quot;cn=test_group,ou=Group,dc=example,dc=com&quot;,</span>
+<span class="go">            &quot;names&quot;: [],</span>
+<span class="go">            &quot;server_type&quot;: &quot;openldap&quot;,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        {</span>
+<span class="go">            &quot;id&quot;: 123,</span>
+<span class="go">            &quot;dn&quot;: &quot;CN=test_group,OU=Groups,DC=example,DC=com&quot;,</span>
+<span class="go">            &quot;names&quot;: {</span>
+<span class="go">                &quot;CN=Jane Doe,OU=Users,DC=example,DC=com&quot;,</span>
+<span class="go">                &quot;CN=John Doe,OU=Users,DC=example,DC=com&quot;,</span>
+<span class="go">            },</span>
+<span class="go">            &quot;server_type&quot;: &quot;ad&quot;,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    [&quot;test_group&quot;],</span>
+<span class="go">)</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._generate_group_operations">
+<span class="sig-name descname"><span class="pre">_generate_group_operations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_sync_groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._generate_group_operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate all the operations for this group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_dict</strong> – The input dictionary to search against.</p></li>
+<li><p><strong>destination_dict</strong> – The destination dictionary to test against.</p></li>
+<li><p><strong>valid_sync_groups</strong> – List of all valid groups to synchronize.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary of all the relevant operations to perform for this group.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, Any]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_group_operations</span><span class="p">(</span>
+<span class="go">    {</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;id&quot;: 123,</span>
+<span class="go">            &quot;dn&quot;: &quot;cn=test_group,ou=Group,dc=example,dc=com&quot;,</span>
+<span class="go">            &quot;names&quot;: [],</span>
+<span class="go">            &quot;server_type&quot;: &quot;openldap&quot;,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        {</span>
+<span class="go">            &quot;id&quot;: 123,</span>
+<span class="go">            &quot;dn&quot;: &quot;CN=test_group,OU=Groups,DC=example,DC=com&quot;,</span>
+<span class="go">            &quot;names&quot;: {</span>
+<span class="go">                &quot;CN=Jane Doe,OU=Users,DC=example,DC=com&quot;,</span>
+<span class="go">                &quot;CN=John Doe,OU=Users,DC=example,DC=com&quot;,</span>
+<span class="go">            },</span>
+<span class="go">            &quot;server_type&quot;: &quot;ad&quot;,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    [&quot;test_group&quot;],</span>
+<span class="go">)</span>
+<span class="go">&#39;test_Group&#39;: {&#39;additions&#39;: [], &#39;deletions&#39;: [], &#39;override_required&#39;: False}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._get_account_data">
+<span class="sig-name descname"><span class="pre">_get_account_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ad_user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._get_account_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get account data for the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ad_user</strong> – The full Distinguished Name of the MS AD user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with the relevant user details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, Any]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_get_account_data</span><span class="p">(</span><span class="s2">&quot;CN=Test User,OU=Users,DC=example,DC=com&quot;</span><span class="p">)</span>
+<span class="go">CN=Jodn Doe,OU=User Accounts,OU=Company,DC=example,DC=com</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._group_search">
+<span class="sig-name descname"><span class="pre">_group_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['*']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._group_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search the configured OU for groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>connection</strong> – Either the MS AD or OpenLDAP LDAP connection.</p></li>
+<li><p><strong>base_string</strong> – The base search string.</p></li>
+<li><p><strong>filter_string</strong> – The filter string.</p></li>
+<li><p><strong>attributes</strong> – Any attributes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The LDAP connection response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LDAP Connection</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_group_search</span><span class="p">(</span>
+<span class="go">    self.ldap_connections[&quot;openldap&quot;],</span>
+<span class="go">    &quot;ou=Group,dc=example,dc=com&quot;,</span>
+<span class="go">    &quot;(objectclass=posixGroup)&quot;</span>
+<span class="go">)</span>
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;raw_dn&quot;: b&quot;cn=hr,ou=Group,dc=example,dc=com&quot;,</span>
+<span class="go">        &quot;dn&quot;: &quot;cn=hr,ou=Group,dc=example,dc=com&quot;,</span>
+<span class="go">        &quot;raw_attributes&quot;: {</span>
+<span class="go">            &quot;memberUid&quot;: [b&quot;johnd&quot;],</span>
+<span class="go">            &quot;gidNumber&quot;: [b&quot;123&quot;],</span>
+<span class="go">            &quot;cn&quot;: [b&quot;hr&quot;],</span>
+<span class="go">            &quot;objectClass&quot;: [b&quot;posixGroup&quot;, b&quot;top&quot;],</span>
+<span class="go">            &quot;description&quot;: [b&quot;Migrated to AD. Do not update in OpenLDAP&quot;],</span>
+<span class="go">        },</span>
+<span class="go">        &quot;attributes&quot;: {</span>
+<span class="go">            &quot;memberUid&quot;: [&quot;johnd&quot;],</span>
+<span class="go">            &quot;gidNumber&quot;: 123,</span>
+<span class="go">            &quot;cn&quot;: [&quot;hr&quot;],</span>
+<span class="go">            &quot;objectClass&quot;: [&quot;posixGroup&quot;, &quot;top&quot;],</span>
+<span class="go">            &quot;description&quot;: [&quot;Migrated to AD. Do not update in OpenLDAP&quot;],</span>
+<span class="go">        },</span>
+<span class="go">        &quot;type&quot;: &quot;searchResEntry&quot;,</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._lookup_ad_user">
+<span class="sig-name descname"><span class="pre">_lookup_ad_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ad_user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._lookup_ad_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a user in MS AD.</p>
+<p>Check if the user is in the cache first to save making external API calls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ad_user</strong> – The full Distinguished Name of the MS AD user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with the relevant user details and <cite>sAMAccountName</cite>
+as the primary key.
+If nothing relevant is found, return with a fixed dictionary of
+know negative values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, Any]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_lookup_ad_user</span><span class="p">(</span><span class="n">CN</span><span class="o">=</span><span class="n">Jodn</span> <span class="n">Doe</span><span class="p">,</span><span class="n">OU</span><span class="o">=</span><span class="n">User</span> <span class="n">Accounts</span><span class="p">,</span><span class="n">DC</span><span class="o">=</span><span class="n">example</span><span class="p">,</span><span class="n">DC</span><span class="o">=</span><span class="n">com</span><span class="p">)</span>
+<span class="go">{</span>
+<span class="go">    &quot;sAMAccountName&quot;: &quot;johnd&quot;,</span>
+<span class="go">    &quot;country_code&quot;: GB,</span>
+<span class="go">    &quot;account_active&quot;: False,</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._main">
+<span class="sig-name descname"><span class="pre">_main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main method of the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._modify_group">
+<span class="sig-name descname"><span class="pre">_modify_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_dn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._modify_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make changes to the group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – This maps to the config section of the required server.</p></li>
+<li><p><strong>connection</strong> – The relevant LDAP server connection.</p></li>
+<li><p><strong>group_dn</strong> – The group Distinguished Name to act on.</p></li>
+<li><p><strong>action</strong> – What action to take.
+<a class="reference external" href="https://ldap3.readthedocs.io/en/latest/operations.html">https://ldap3.readthedocs.io/en/latest/operations.html</a></p></li>
+<li><p><strong>user_list</strong> – The list of users to take action on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NO RETURN. Modify the relevant group.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>–</p>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_modify_group</span><span class="p">(</span>
+<span class="go">    &quot;openldap&quot;,</span>
+<span class="go">    self.ldap_connections[&quot;openldap&quot;],</span>
+<span class="go">    &quot;cn=test_group,ou=Group,dc=example,dc=com&quot;,</span>
+<span class="go">    &quot;MODIFY_DELETE&quot;,</span>
+<span class="go">    [&quot;johnd&quot;]</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._new_ldap_group">
+<span class="sig-name descname"><span class="pre">_new_ldap_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">openldap_group_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ad_group_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._new_ldap_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add missing group to OpenLDAP.</p>
+<p>Ensure that we update the relevant dictionaries so that we have valid
+synchronization groups on the first run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – This maps to the config section of the required server.</p></li>
+<li><p><strong>group</strong> – Name of the group we will add.</p></li>
+<li><p><strong>openldap_group_dictionary</strong> – Dictionary of all the OpenLDAP groups.</p></li>
+<li><p><strong>ad_group_dictionary</strong> – Dictionary of all the MS AD groups.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NO RETURN. Add any missing groups.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>–</p>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_new_ldap_group</span><span class="p">(</span>
+<span class="go">    &quot;openldap&quot;,</span>
+<span class="go">    &quot;test_group&quot;,</span>
+<span class="go">    openldap_group_dictionary={},</span>
+<span class="go">    ad_group_dictionary={</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;id&quot;: 123,</span>
+<span class="go">            &quot;dn&quot;: &quot;CN=test_group,OU=Groups,DC=example,DC=com&quot;,</span>
+<span class="go">            &quot;names&quot;: {</span>
+<span class="go">                &quot;CN=John Doe,OU=User Accounts,DC=example,DC=com&quot;,</span>
+<span class="go">                &quot;CN=Jane Doe,OU=User Accounts,DC=example,DC=com&quot;,</span>
+<span class="go">            },</span>
+<span class="go">            &quot;server_type&quot;: &quot;ad&quot;,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._process_operations">
+<span class="sig-name descname"><span class="pre">_process_operations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination_group_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_operations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._process_operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process the operations for this group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>destination_group_dict</strong> – Dictionary of all the groups and their users</p></li>
+<li><p><strong>group_operations</strong> – The operations to perform.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NO RETURN. This calls <cite>self._modify_group</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>–</p>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_process_operations</span><span class="p">(</span>
+<span class="go">    {</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;id&quot;: 123,</span>
+<span class="go">            &quot;dn&quot;: &quot;cn=hr,ou=Group,dc=ai&quot;,</span>
+<span class="go">            &quot;names&quot;: [&quot;janed&quot;],</span>
+<span class="go">            &quot;server_type&quot;: &quot;openldap&quot;,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;test_group&quot;: {</span>
+<span class="go">            &quot;additions&quot;: [],</span>
+<span class="go">            &quot;deletions&quot;: [&quot;johnd&quot;],</span>
+<span class="go">            &quot;override_required&quot;: False,</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync._user_search">
+<span class="sig-name descname"><span class="pre">_user_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_base</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync._user_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for a specific user in a given server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – This maps to the config section of the required server.</p></li>
+<li><p><strong>user_name</strong> – This will either be the sAMAccountName for OpenLDAP or
+the Common Name for MS AD.</p></li>
+<li><p><strong>user_base</strong> (<em>optional</em>) – The user base.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The LDAP connection response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LDAP Connection</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_user_search</span><span class="p">(</span><span class="s2">&quot;openldap&quot;</span><span class="p">,</span> <span class="s2">&quot;johnd&quot;</span><span class="p">)</span>
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;raw_dn&quot;: b&quot;uid=johnd,ou=People,dc=example,dc=com&quot;,</span>
+<span class="go">        &quot;dn&quot;: &quot;uid=johdn,ou=People,dc=example,dc=com&quot;,</span>
+<span class="go">        &quot;raw_attributes&quot;: {</span>
+<span class="go">            &quot;objectClass&quot;: [b&quot;person&quot;],</span>
+<span class="go">            &quot;gecos&quot;: [b&quot;johnd&quot;],</span>
+<span class="go">        },</span>
+<span class="go">        &quot;attributes&quot;: {</span>
+<span class="go">            &quot;objectClass&quot;: [&quot;person&quot;],</span>
+<span class="go">            &quot;gecos&quot;: &quot;johnd&quot;,</span>
+<span class="go">        },</span>
+<span class="go">        &quot;type&quot;: &quot;searchResEntry&quot;,</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync.object_lookup_cache">
+<span class="sig-name descname"><span class="pre">object_lookup_cache</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync.object_lookup_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main cache for recursive lookup during flattening of groups.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync.run_status">
+<span class="sig-name descname"><span class="pre">run_status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync.run_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>The overall run status of the script. Set to false anytime something goes
+wrong.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.runners.group_sync.AdLdapGroupSync.user_lookup_cache">
+<span class="sig-name descname"><span class="pre">user_lookup_cache</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#src.runners.group_sync.AdLdapGroupSync.user_lookup_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main cache for all the users.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.runners.user_sync">
+<span id="src-runners-user-sync-module"></span><h2>src.runners.user_sync module<a class="headerlink" href="#module-src.runners.user_sync" title="Permalink to this heading">¶</a></h2>
+<p>This module is used to synchronize users from MS AD to OpenLDAP.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.runners.user_sync.</span></span><span class="sig-name descname"><span class="pre">AdLdapUserSync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basic_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ldap_connections</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ldap3.core.connection.Connection</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Users from a specific OU’s are synchronised (created/modified) between the
+directories.</p>
+<ul class="simple">
+<li><p>New users will be created in OpenLDAP based on data from MS AD and a standard
+mask.</p></li>
+<li><p>Some user attributes are authoritative in MS AD and copied over to OpenLDAP and
+visa versa. Other attributes may be copied from one field in a directory to
+another field in the same directory.</p></li>
+<li><p>Regardless of group or user synchronisation, users are checked against an
+exception lookup table.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basic_config</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary containing all the basic configuration settings.</p></li>
+<li><p><strong>ldap_connections</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Connection</em><em>]</em>) – A dictionary containing all the LDAP connections.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._add_class_to_ldap_account">
+<span class="sig-name descname"><span class="pre">_add_class_to_ldap_account</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ldap_object_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._add_class_to_ldap_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add any missing objectClass and relevant attribute to an existing LDAP
+account which doesn’t have it.</p>
+<dl class="simple">
+<dt>For details about the Samba SAM Account Control Block Flags, see:</dt><dd><p><a class="reference external" href="https://www.samba.org/samba/docs/old/Samba3-HOWTO/passdb.html#TOSHARG-acctflags">https://www.samba.org/samba/docs/old/Samba3-HOWTO/passdb.html#TOSHARG-acctflags</a></p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – This maps to the config section of the required server.</p></li>
+<li><p><strong>user</strong> – The name of the user to work on.</p></li>
+<li><p><strong>ldap_object_class</strong> – String representing an LDAP class to add to user object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NO RETURN. Update the <cite>all_users</cite> cache with the new data for this user.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>–</p>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_add_class_to_ldap_account</span><span class="p">(</span><span class="s2">&quot;openldap&quot;</span><span class="p">,</span> <span class="s2">&quot;johnd&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="go">{&quot;objectClass&quot;: [(MODIFY_ADD, [&quot;ldapPublicKey&quot;])]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._attr_ascii_compare">
+<span class="sig-name descname"><span class="pre">_attr_ascii_compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synced_attrs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._attr_ascii_compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare attributes.</p>
+<p>Our current schema in OpenLDAP only supports IA5String
+(<a class="reference external" href="https://ldapwiki.com/wiki/IA5String">https://ldapwiki.com/wiki/IA5String</a>) for some specific fields (ex: gecos).
+This encoding is essentially just ASCII and does not support UTF-8.
+In MS AD we have users with UTF-8 characters. As such, we have to decode those
+both for testing if there is a change and for assigning the value to OpenLDAP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> – The user on which to operate on.</p></li>
+<li><p><strong>source_server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – The source server.</p></li>
+<li><p><strong>attr</strong> – The attribute to operate on.</p></li>
+<li><p><strong>destination_server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – The destination server.</p></li>
+<li><p><strong>synced_attrs</strong> – A dictionary of all the attributes that are currently being synchronized.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>NoneType</em> – If there are no changes or the source data field is an empty string.</p></li>
+<li><p><em>str</em> – Return the source data if there is a change in either the original
+(potential) UTF-8, or ASCII to comply with the current OpenLDAP schema.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_attr_ascii_compare</span><span class="p">(</span>
+<span class="go">    &quot;johnd&quot;,</span>
+<span class="go">    &quot;openldap&quot;,</span>
+<span class="go">    &quot;unixHomeDirectory&quot;,</span>
+<span class="go">    &quot;ad&quot;,</span>
+<span class="go">    &quot;{&#39;uid&#39;: &#39;uid&#39;, &#39;homeDirectory&#39;: &#39;unixHomeDirectory&#39;}&quot;,</span>
+<span class="go">)</span>
+<span class="go">/bin/bash</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._build_attr_changes">
+<span class="sig-name descname"><span class="pre">_build_attr_changes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._build_attr_changes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the changes for all the relevant attributes.</p>
+<p>This is slightly complicated in that there are both local and
+remotely synchronized attributes.
+In addition, we have both OpenLDAP and MS AD servers.
+Then there is the issue of checking against any local changes before
+making remote changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – The source server.</p></li>
+<li><p><strong>destination_server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – The destination server.</p></li>
+<li><p><strong>attr_type</strong> (<cite>local_copy_attrs</cite>, <cite>remote_copy_attrs</cite>) – The type of attribute synchronization we are doing.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NO RETURN. Update the user in the <cite>all_users</cite> cache with the relevant
+attribute changes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>–</p>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_build_attr_changes</span><span class="p">(</span><span class="n">source_server_type</span><span class="o">=</span><span class="s2">&quot;openldap&quot;</span><span class="p">,</span>
+<span class="go">    destination_server_type=&quot;ad&quot;, attr_type=&quot;remote_synced_attrs&quot;,)</span>
+<span class="go">{&#39;gecos&#39;: &#39;johnd&#39;}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If there are already changes present, first check against them as the new
+authoritative source, instead of checking against the original authoritative
+source.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._check_change">
+<span class="sig-name descname"><span class="pre">_check_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._check_change" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the user status based on their attributes and amend as appropriate.</p>
+<p>Also change their password if there where changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> – The user on which to act.</p></li>
+<li><p><strong>operation</strong> (<cite>operator.ne</cite>, <cite>operator.eq</cite>) – The specific operator to use for this change check, from the operator class.</p></li>
+<li><p><strong>mask</strong> (<cite>enable_user_mask</cite>, <cite>disable_user_mask</cite>) – The specific mask to be applied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NO RETURN. Update the user in the <cite>all_users</cite> cache per the required mask
+in the <cite>changes</cite> dictionary and reset the password.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>–</p>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_check_change</span><span class="p">(</span><span class="s2">&quot;johnd&quot;</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">eq</span><span class="p">,</span> <span class="s2">&quot;enable_user_mask&quot;</span><span class="p">)</span>
+<span class="go">{</span>
+<span class="go">    &quot;loginShell&quot;: &quot;/sbin/nologin&quot;,</span>
+<span class="go">    &quot;sambaAcctFlags&quot;: &quot;[DU         ]&quot;,</span>
+<span class="go">    &quot;sshPublicKey&quot;: &#39;[b&quot;ecdsa-sha2-nistp256 abc123 ldap-disable@key&quot;]&#39;,</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._check_user_enable_disable">
+<span class="sig-name descname"><span class="pre">_check_user_enable_disable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._check_user_enable_disable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the user is enabled or disabled and act acordingly.</p>
+<p>Depending on the state of the user, other methods will be called to take action.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_check_user_enable_disable</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">self._add_class_to_ldap_account</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">self._check_change</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">self._new_ldap_account</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._convert_lists_to_strings">
+<span class="sig-name descname"><span class="pre">_convert_lists_to_strings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._convert_lists_to_strings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert all attributes that have lists as values to strings.</p>
+<p>OpenLDAP results are lists and MS AD results are just strings,
+unless the results are empty and then MS AD returns an empty list.
+This normalizes to strings so that we can do direct comparisons.</p>
+<p>In addition, OpenLDAP stores the SSH keys as byte encoded strings,
+even if you send it normal strings. We thus need to decode bytes
+to strings for the comparison later on.</p>
+<p>Lastly, we have no code to handly any list longer than one entry, thus
+we hard exit to avoid potential issues down stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NO RETURN. Update the user in the <cite>all_users</cite> cache.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>–</p>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_convert_lists_to_strings</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._generate_password">
+<span class="sig-name descname"><span class="pre">_generate_password</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._generate_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a random password per the configured options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The first un-encoded password that matches the password requirements.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_password</span><span class="p">()</span>
+<span class="go">6JQMApbY%sQc</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._get_all_users">
+<span class="sig-name descname"><span class="pre">_get_all_users</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._get_all_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get users from both MS AD and OpenLDAP based on a specific OU.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NO RETURN. Populate the global cache <cite>all_users</cite>.
+A dictionary with all the users <cite>sAMAccountName</cite> as the primary key,
+LDAP servers as secondary keys and then the relevant attributes.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>–</p>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_get_all_users</span><span class="p">()</span>
+<span class="go">{</span>
+<span class="go">    &quot;johnd&quot;: {</span>
+<span class="go">        &quot;ad&quot;: {</span>
+<span class="go">            &quot;cn&quot;: &quot;John Doe&quot;,</span>
+<span class="go">            &quot;uidNumber&quot;: 123,</span>
+<span class="go">        },</span>
+<span class="go">        &quot;openldap&quot;: {&quot;uid&quot;: &quot;johnd&quot;, &quot;cn&quot;: &quot;John Doe&quot;},</span>
+<span class="go">    }</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._get_next_sambasid">
+<span class="sig-name descname"><span class="pre">_get_next_sambasid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._get_next_sambasid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the next available SambaSID.</p>
+<p>Do not fill in blanks. As in, if there are entries for 100 and 102,
+101 should be ignored and the next entry should be 103.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A string containing the next available SambaSID.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_get_next_sambasid</span><span class="p">()</span>
+<span class="go">S-1-2-34-5678901234-5678918346-164430003-1857</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._get_user_attributes">
+<span class="sig-name descname"><span class="pre">_get_user_attributes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._get_user_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the relevant user attributes.</p>
+<p>Take care with this particular method as it can be very confusing.
+From the <cite>remote_synced_attrs</cite> configuration entry, <cite>ad</cite> should be populated
+with all <cite>ad</cite> keys and <cite>openldap</cite> values. Visa versa for <cite>openldap</cite>.
+Then add all the “not_synced_attrs” configuration entry, and finally any
+<cite>local_copy_attrs</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary with all the user attributes to search for.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_get_user_attributes</span><span class="p">()</span>
+<span class="go">{&quot;ad&quot;: [&quot;cn&quot;, &quot;uidNumber&quot;], &quot;openldap&quot;: [&quot;c&quot;, &quot;userAccountControl&quot;]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._main">
+<span class="sig-name descname"><span class="pre">_main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function of the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._new_ldap_account">
+<span class="sig-name descname"><span class="pre">_new_ldap_account</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._new_ldap_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set all the relevant details for a new OpenLDAP account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – This maps to the config section of the required server.</p></li>
+<li><p><strong>user</strong> – The name of the user to create.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NO RETURN. Update the <cite>all_users</cite> cache with this new user.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>–</p>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_new_ldap_account</span><span class="p">(</span><span class="s2">&quot;openldap&quot;</span><span class="p">,</span> <span class="s2">&quot;johnd&quot;</span><span class="p">)</span>
+<span class="go">{&quot;uid&quot;: &quot;johnd&quot;, &quot;changes&quot;: {}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._set_random_ldap_password">
+<span class="sig-name descname"><span class="pre">_set_random_ldap_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._set_random_ldap_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the encoded password to the changes dictionary for the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server_type</strong> (<cite>ad</cite>, <cite>openldap</cite>) – This maps to the config section of the required server.</p></li>
+<li><p><strong>user</strong> – The user for which we want to change the password.</p></li>
+<li><p><strong>password_type</strong> (<cite>[“userPassword”, “SambaNTPassword”]</cite>) – A list of password types to change. It can be one or more from
+the list.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The first un-encoded password that matches the password requirements.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_set_random_ldap_password</span><span class="p">(</span><span class="s2">&quot;openldap&quot;</span><span class="p">,</span> <span class="s2">&quot;johnd&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;sambaNTPassword&quot;</span><span class="p">])</span>
+<span class="go">6JQMApbY%sQc</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync._update_ldap_account">
+<span class="sig-name descname"><span class="pre">_update_ldap_account</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync._update_ldap_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates all the relevant details for an existing OpenLDAP account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user</strong> – The name of the user to create.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NO RETURN. Update the <cite>all_users</cite> cache with the changes for this user.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>–</p>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">_update_ldap_account</span><span class="p">(</span><span class="s2">&quot;johnd&quot;</span><span class="p">)</span>
+<span class="go">{&#39;gecos&#39;: [(&#39;MODIFY_REPLACE&#39;, [&#39;johnd&#39;])]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync.all_users">
+<span class="sig-name descname"><span class="pre">all_users</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync.all_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main cache for all the users.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.runners.user_sync.AdLdapUserSync.run_status">
+<span class="sig-name descname"><span class="pre">run_status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#src.runners.user_sync.AdLdapUserSync.run_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>The overall run status of the script. Set to false anytime something goes
+wrong.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.runners">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.runners" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">src.runners package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-src.runners.group_sync">src.runners.group_sync module</a><ul>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync</span></code></a><ul>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._add_missing_openldap_groups"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._add_missing_openldap_groups()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._build_sync_group_list"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._build_sync_group_list()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._check_ad_object_type"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._check_ad_object_type()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._check_country_control"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._check_country_control()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._check_override_required"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._check_override_required()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._check_process_changes"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._check_process_changes()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._create_group_dictionary"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._create_group_dictionary()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._determine_change_percent"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._determine_change_percent()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._determine_group_id"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._determine_group_id()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._determine_group_members"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._determine_group_members()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._determine_group_name"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._determine_group_name()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._determine_user_base"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._determine_user_base()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._find_user_in_source_dict"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._find_user_in_source_dict()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._flatten_nested_group"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._flatten_nested_group()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._generate_additions"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._generate_additions()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._generate_deletions"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._generate_deletions()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._generate_group_operations"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._generate_group_operations()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._get_account_data"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._get_account_data()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._group_search"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._group_search()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._lookup_ad_user"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._lookup_ad_user()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._main"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._main()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._modify_group"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._modify_group()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._new_ldap_group"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._new_ldap_group()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._process_operations"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._process_operations()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync._user_search"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync._user_search()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync.object_lookup_cache"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync.object_lookup_cache</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync.run_status"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync.run_status</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.group_sync.AdLdapGroupSync.user_lookup_cache"><code class="docutils literal notranslate"><span class="pre">AdLdapGroupSync.user_lookup_cache</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.runners.user_sync">src.runners.user_sync module</a><ul>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync</span></code></a><ul>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._add_class_to_ldap_account"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._add_class_to_ldap_account()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._attr_ascii_compare"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._attr_ascii_compare()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._build_attr_changes"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._build_attr_changes()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._check_change"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._check_change()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._check_user_enable_disable"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._check_user_enable_disable()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._convert_lists_to_strings"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._convert_lists_to_strings()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._generate_password"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._generate_password()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._get_all_users"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._get_all_users()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._get_next_sambasid"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._get_next_sambasid()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._get_user_attributes"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._get_user_attributes()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._main"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._main()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._new_ldap_account"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._new_ldap_account()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._set_random_ldap_password"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._set_random_ldap_password()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync._update_ldap_account"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync._update_ldap_account()</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync.all_users"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync.all_users</span></code></a></li>
+<li><a class="reference internal" href="#src.runners.user_sync.AdLdapUserSync.run_status"><code class="docutils literal notranslate"><span class="pre">AdLdapUserSync.run_status</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.runners">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/src.runners.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MS AD &lt;-&gt; OpenLDAP sync v1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">src.runners package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Peter &amp; Martinus.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+ldap3 = "*"
+pyasn1 = "*"
+pyyaml = "*"
+unidecode = "*"
+loguru = "*"
+
+[dev-packages]
+black = "*"
+coverage = "*"
+flake8 = "*"
+pyflakes = "*"
+mypy = "*"
+mypy-extensions = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-mock = "*"
+bandit = "*"
+mccabe = "*"
+pycodestyle = "*"
+types-PyYAML = "*"
+yamllint = "*"
+autodocsumm = "*"
+docstr-coverage = "*"
+Sphinx = "*"
+gprof2dot = "*"
+pip-audit = "*"
+refurb = "*"
+radon = "*"
+
+[requires]
+python_version = "3.10"

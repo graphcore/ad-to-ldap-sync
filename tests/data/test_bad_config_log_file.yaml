@@ -1,0 +1,32 @@
+---
+settings:
+  total_change_threshold: 50
+  deletions_change_threshold: 30
+  additions_change_threshold: 30
+  monitoring_log_file: "/does_not_exists/cant_write_here_lol"
+  log_file: "/does_not_exists/cant_write_here_lol"
+  log_file_level: "DEBUG"
+openldap:
+  server: "thing"
+  port: 1234
+  get_info: "ALL"
+  ciphers: "ALL"
+  ssl:
+    enabled: true
+    validate: "CERT_NONE"
+    version: "PROTOCOL_TLSv1"
+  bind_user: "uid=something,ou=People,dc=example,dc=com"
+  bind_pass: "somepass"
+  schema:
+    base: "dc=example,dc=com"
+    users: "ou=People"
+    groups: "ou=Group"
+    objects:
+      user:
+        name: "uid"
+        obj_class: "posixAccount"
+      group:
+        name: "cn"
+        obj_class: "posixGroup"
+        gid: "gidNumber"
+        members: "memberUid"

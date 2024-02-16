@@ -1,0 +1,474 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>src.utils package &#8212; MS AD &lt;-&gt; OpenLDAP sync v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MS AD &lt;-&gt; OpenLDAP sync v1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">src.utils package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="src-utils-package">
+<h1>src.utils package<a class="headerlink" href="#src-utils-package" title="Permalink to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="src-utils-basic-config-module">
+<h2>src.utils.basic_config module<a class="headerlink" href="#src-utils-basic-config-module" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="module-src.utils.ldap_connections">
+<span id="src-utils-ldap-connections-module"></span><h2>src.utils.ldap_connections module<a class="headerlink" href="#module-src.utils.ldap_connections" title="Permalink to this heading">¶</a></h2>
+<p>This module is used to set up all the LDAP connections.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.utils.ldap_connections.LdapConnections">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.utils.ldap_connections.</span></span><span class="sig-name descname"><span class="pre">LdapConnections</span></span><a class="headerlink" href="#src.utils.ldap_connections.LdapConnections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is used to set up all the LDAP connections.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.ldap_connections.LdapConnections._bind_to_ldap">
+<span class="sig-name descname"><span class="pre">_bind_to_ldap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basic_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Connection</span></span></span><a class="headerlink" href="#src.utils.ldap_connections.LdapConnections._bind_to_ldap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bind to the relevant LDAP server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basic_config</strong> – The basic configuration as per BasicConfig</p></li>
+<li><p><strong>server_type</strong> – Either “ad” for MS AD or “openldap” for OpenLDAP.
+This maps to the config section of the required server.</p></li>
+<li><p><strong>runner</strong> – The runner this was called from. This will write a monitoring log file for
+that runner.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://ldap3.readthedocs.io/en/latest/bind.html">https://ldap3.readthedocs.io/en/latest/bind.html</a></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LDAP authenticated connection.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Any exception should: notify the user, exit with failure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.ldap_connections.LdapConnections._create_ldap_connection_object">
+<span class="sig-name descname"><span class="pre">_create_ldap_connection_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basic_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ldap_server_object</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Connection</span></span></span><a class="headerlink" href="#src.utils.ldap_connections.LdapConnections._create_ldap_connection_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the LDAP connection object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basic_config</strong> – The basic configuration as per BasicConfig</p></li>
+<li><p><strong>ldap_server_object</strong> – <a class="reference external" href="https://ldap3.readthedocs.io/en/latest/server.html">https://ldap3.readthedocs.io/en/latest/server.html</a></p></li>
+<li><p><strong>server_type</strong> – Either “ad” for MS AD or “openldap” for OpenLDAP.
+This maps to the config section of the required server.</p></li>
+<li><p><strong>runner</strong> – The runner this was called from. This will write a monitoring log file for
+that runner.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://ldap3.readthedocs.io/en/latest/connection.html">https://ldap3.readthedocs.io/en/latest/connection.html</a></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LDAP Connection object</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Any exception should: notify the user, exit with failure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.ldap_connections.LdapConnections._create_ldap_server_object">
+<span class="sig-name descname"><span class="pre">_create_ldap_server_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basic_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tls_configuration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Server</span></span></span><a class="headerlink" href="#src.utils.ldap_connections.LdapConnections._create_ldap_server_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the LDAP server object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basic_config</strong> – The basic configuration as per BasicConfig</p></li>
+<li><p><strong>tls_configuration</strong> – <a class="reference external" href="https://ldap3.readthedocs.io/en/latest/ssltls.html">https://ldap3.readthedocs.io/en/latest/ssltls.html</a></p></li>
+<li><p><strong>server_type</strong> – Either “ad” for MS AD or “openldap” for OpenLDAP.
+This maps to the config section of the required server.</p></li>
+<li><p><strong>runner</strong> – The runner this was called from. This will write a monitoring log file for
+that runner.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://ldap3.readthedocs.io/en/latest/server.html">https://ldap3.readthedocs.io/en/latest/server.html</a></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TLS object</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Any exception should: notify the user, exit with failure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.ldap_connections.LdapConnections._create_tls_object">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_create_tls_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basic_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tls</span></span></span><a class="headerlink" href="#src.utils.ldap_connections.LdapConnections._create_tls_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the TLS object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basic_config</strong> – The basic configuration as per BasicConfig.</p></li>
+<li><p><strong>server_type</strong> – Either “ad” for MS AD or “openldap” for OpenLDAP.
+This maps to the config section of the required server.</p></li>
+<li><p><strong>runner</strong> – The runner this was called from. This will write a monitoring log file for
+that runner.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://ldap3.readthedocs.io/en/latest/ssltls.html">https://ldap3.readthedocs.io/en/latest/ssltls.html</a></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TLS object</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Any exception should: notify the user, exit with failure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.ldap_connections.LdapConnections.setup_ldap_connections">
+<span class="sig-name descname"><span class="pre">setup_ldap_connections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basic_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ldap3.core.connection.Connection</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.utils.ldap_connections.LdapConnections.setup_ldap_connections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function of the class.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.utils.manage_argument_parser">
+<span id="src-utils-manage-argument-parser-module"></span><h2>src.utils.manage_argument_parser module<a class="headerlink" href="#module-src.utils.manage_argument_parser" title="Permalink to this heading">¶</a></h2>
+<p>This module is used to set up the argument parser.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageArguments">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.utils.manage_argument_parser.</span></span><span class="sig-name descname"><span class="pre">ManageArguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">console_log_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">universal_override</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_override</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">environment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.utils.manage_argument_parser.ManageArguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The data class for all the arguments.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageArguments.config_file">
+<span class="sig-name descname"><span class="pre">config_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.utils.manage_argument_parser.ManageArguments.config_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageArguments.console_log_level">
+<span class="sig-name descname"><span class="pre">console_log_level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.utils.manage_argument_parser.ManageArguments.console_log_level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageArguments.environment">
+<span class="sig-name descname"><span class="pre">environment</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.utils.manage_argument_parser.ManageArguments.environment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageArguments.group_override">
+<span class="sig-name descname"><span class="pre">group_override</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#src.utils.manage_argument_parser.ManageArguments.group_override" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageArguments.op_type">
+<span class="sig-name descname"><span class="pre">op_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.utils.manage_argument_parser.ManageArguments.op_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageArguments.universal_override">
+<span class="sig-name descname"><span class="pre">universal_override</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#src.utils.manage_argument_parser.ManageArguments.universal_override" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageParser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.utils.manage_argument_parser.</span></span><span class="sig-name descname"><span class="pre">ManageParser</span></span><a class="headerlink" href="#src.utils.manage_argument_parser.ManageParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is used to set up the argument parser.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageParser._add_config_file">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_add_config_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArgumentParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.manage_argument_parser.ManageParser._add_config_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add main configuration file argument.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageParser._add_console_log_level">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_add_console_log_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArgumentParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.manage_argument_parser.ManageParser._add_console_log_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add console log level argument.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageParser._add_environment">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_add_environment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArgumentParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.manage_argument_parser.ManageParser._add_environment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add environment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageParser._add_group_override">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_add_group_override</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArgumentParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.manage_argument_parser.ManageParser._add_group_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add group override argument.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageParser._add_universal_override">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_add_universal_override</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArgumentParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.manage_argument_parser.ManageParser._add_universal_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add universal override argument.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageParser._build_args">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_build_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.utils.manage_argument_parser.ManageArguments" title="src.utils.manage_argument_parser.ManageArguments"><span class="pre">ManageArguments</span></a></span></span><a class="headerlink" href="#src.utils.manage_argument_parser.ManageParser._build_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ManageArguments object with all relevant arguments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageParser._build_parser">
+<span class="sig-name descname"><span class="pre">_build_parser</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ArgumentParser</span></span></span><a class="headerlink" href="#src.utils.manage_argument_parser.ManageParser._build_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the argument parser.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ArgumentParser object with all relevant arguments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageParser._parse_args">
+<span class="sig-name descname"><span class="pre">_parse_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.utils.manage_argument_parser.ManageArguments" title="src.utils.manage_argument_parser.ManageArguments"><span class="pre">ManageArguments</span></a></span></span><a class="headerlink" href="#src.utils.manage_argument_parser.ManageParser._parse_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ManageArguments object with all relevant arguments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.manage_argument_parser.ManageParser.parse_cli_args">
+<span class="sig-name descname"><span class="pre">parse_cli_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.utils.manage_argument_parser.ManageArguments" title="src.utils.manage_argument_parser.ManageArguments"><span class="pre">ManageArguments</span></a></span></span><a class="headerlink" href="#src.utils.manage_argument_parser.ManageParser.parse_cli_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ManageArguments object with all relevant arguments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.utils.utilities">
+<span id="src-utils-utilities-module"></span><h2>src.utils.utilities module<a class="headerlink" href="#module-src.utils.utilities" title="Permalink to this heading">¶</a></h2>
+<p>This module is used for ad-hoc utilities.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.utils.utilities.fill_array_gaps">
+<span class="sig-prename descclassname"><span class="pre">src.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">fill_array_gaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numbers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#src.utils.utilities.fill_array_gaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a gap in an unsorted array of numbers with regards to the offset.</p>
+<p>Given a list of [200, 202, 190, 201, 204] and an offset of 200, return 202.</p>
+<p>If there are no gaps, the highest value + 1 will be returned so long as
+said value is greater than the offset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>numbers</strong> – A list of integers.</p></li>
+<li><p><strong>offset</strong> – An integer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>An integer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.utils.utilities.get_next_gid_uid_number">
+<span class="sig-prename descclassname"><span class="pre">src.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">get_next_gid_uid_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basic_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ldap_connections</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ldap3.core.connection.Connection</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">member</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#src.utils.utilities.get_next_gid_uid_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the next available LDAP gid or uid number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basic_config</strong> – The basic configuration as per BasicConfig.</p></li>
+<li><p><strong>ldap_connections</strong> – Dictionary containing both the MS AD and OpenLDAP connections.</p></li>
+<li><p><strong>server_type</strong> – Either “ad” for MS AD or “openldap” for OpenLDAP.
+This maps to the config section of the required server.</p></li>
+<li><p><strong>member</strong> – Either “group” or “user”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>An integer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.utils.utilities.user_exception_lookup">
+<span class="sig-prename descclassname"><span class="pre">src.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">user_exception_lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basic_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_users</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.utilities.user_exception_lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lookup users in the exception table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basic_config</strong> – The basic configuration as per BasicConfig.</p></li>
+<li><p><strong>all_users</strong> – A dictionary containing all the users and acting as a cache.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.utils.utilities.write_monitoring_log">
+<span class="sig-prename descclassname"><span class="pre">src.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">write_monitoring_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basic_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runner</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.utilities.write_monitoring_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the monitoring log with the run status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basic_config</strong> – The basic configuration as per BasicConfig.</p></li>
+<li><p><strong>run_status</strong> – True if the run was a success, False otherwise.</p></li>
+<li><p><strong>runner</strong> – The runner this was called from. This will write a monitoring log file for
+that runner.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Any error should log to STDOUT and exit with failure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-src.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.utils" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">src.utils package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#src-utils-basic-config-module">src.utils.basic_config module</a></li>
+<li><a class="reference internal" href="#module-src.utils.ldap_connections">src.utils.ldap_connections module</a><ul>
+<li><a class="reference internal" href="#src.utils.ldap_connections.LdapConnections"><code class="docutils literal notranslate"><span class="pre">LdapConnections</span></code></a><ul>
+<li><a class="reference internal" href="#src.utils.ldap_connections.LdapConnections._bind_to_ldap"><code class="docutils literal notranslate"><span class="pre">LdapConnections._bind_to_ldap()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.ldap_connections.LdapConnections._create_ldap_connection_object"><code class="docutils literal notranslate"><span class="pre">LdapConnections._create_ldap_connection_object()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.ldap_connections.LdapConnections._create_ldap_server_object"><code class="docutils literal notranslate"><span class="pre">LdapConnections._create_ldap_server_object()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.ldap_connections.LdapConnections._create_tls_object"><code class="docutils literal notranslate"><span class="pre">LdapConnections._create_tls_object()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.ldap_connections.LdapConnections.setup_ldap_connections"><code class="docutils literal notranslate"><span class="pre">LdapConnections.setup_ldap_connections()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.utils.manage_argument_parser">src.utils.manage_argument_parser module</a><ul>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageArguments"><code class="docutils literal notranslate"><span class="pre">ManageArguments</span></code></a><ul>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageArguments.config_file"><code class="docutils literal notranslate"><span class="pre">ManageArguments.config_file</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageArguments.console_log_level"><code class="docutils literal notranslate"><span class="pre">ManageArguments.console_log_level</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageArguments.environment"><code class="docutils literal notranslate"><span class="pre">ManageArguments.environment</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageArguments.group_override"><code class="docutils literal notranslate"><span class="pre">ManageArguments.group_override</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageArguments.op_type"><code class="docutils literal notranslate"><span class="pre">ManageArguments.op_type</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageArguments.universal_override"><code class="docutils literal notranslate"><span class="pre">ManageArguments.universal_override</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageParser"><code class="docutils literal notranslate"><span class="pre">ManageParser</span></code></a><ul>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageParser._add_config_file"><code class="docutils literal notranslate"><span class="pre">ManageParser._add_config_file()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageParser._add_console_log_level"><code class="docutils literal notranslate"><span class="pre">ManageParser._add_console_log_level()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageParser._add_environment"><code class="docutils literal notranslate"><span class="pre">ManageParser._add_environment()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageParser._add_group_override"><code class="docutils literal notranslate"><span class="pre">ManageParser._add_group_override()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageParser._add_universal_override"><code class="docutils literal notranslate"><span class="pre">ManageParser._add_universal_override()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageParser._build_args"><code class="docutils literal notranslate"><span class="pre">ManageParser._build_args()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageParser._build_parser"><code class="docutils literal notranslate"><span class="pre">ManageParser._build_parser()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageParser._parse_args"><code class="docutils literal notranslate"><span class="pre">ManageParser._parse_args()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.manage_argument_parser.ManageParser.parse_cli_args"><code class="docutils literal notranslate"><span class="pre">ManageParser.parse_cli_args()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.utils.utilities">src.utils.utilities module</a><ul>
+<li><a class="reference internal" href="#src.utils.utilities.fill_array_gaps"><code class="docutils literal notranslate"><span class="pre">fill_array_gaps()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.utilities.get_next_gid_uid_number"><code class="docutils literal notranslate"><span class="pre">get_next_gid_uid_number()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.utilities.user_exception_lookup"><code class="docutils literal notranslate"><span class="pre">user_exception_lookup()</span></code></a></li>
+<li><a class="reference internal" href="#src.utils.utilities.write_monitoring_log"><code class="docutils literal notranslate"><span class="pre">write_monitoring_log()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/src.utils.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MS AD &lt;-&gt; OpenLDAP sync v1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">src.utils package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Peter &amp; Martinus.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

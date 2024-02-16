@@ -1,0 +1,249 @@
+---
+{
+  "NONE UID": {
+    "ad": {
+      "cn": "NONE UID",
+      "sn": "UID",
+      "c": "GB",
+      "givenName": "NONE",
+      "displayName": "NONE UID",
+      "userAccountControl": 512,
+      "sAMAccountName": "noneu",
+      "mail": "noneu@example.com",
+      "gecos": [],
+      "gidNumber": [],
+      "loginShell": [],
+      "uid": "NONE",
+      "uidNumber": [],
+      "unixHomeDirectory": [],
+      "dn": "CN=NONE UID,OU=Users,OU=User Accounts,OU=Company,DC=Example,DC=com", # yamllint disable-line
+      "changes": {}
+    }
+  },
+  "jeffr": {
+    "ad": {
+      "cn": "Jeff Rod",
+      "sn": "Rod",
+      "c": "GB",
+      "givenName": "Jeff",
+      "displayName": "Jeff Rod",
+      "userAccountControl": 512,
+      "sAMAccountName": "jeffr",
+      "mail": "jeffr@example.com",
+      "gecos": [],
+      "gidNumber": [],
+      "loginShell": [],
+      "uid": [],
+      "uidNumber": [],
+      "unixHomeDirectory": [],
+      "dn": "CN=Jeff Rod,OU=Users,OU=User Accounts,OU=Company,DC=Example,DC=com", # yamllint disable-line
+      "changes": {}
+    }
+  },
+  "bos": {
+    "openldap": {
+      "uid": "bos",
+      "cn": "Bos Doe",
+      "givenName": "nonsense",
+      "sn": "Doe",
+      "mail": "bos@example.com",
+      "loginShell": "/bin/bash",
+      "uidNumber": 4567,
+      "gidNumber": 501,
+      "homeDirectory": "/home/bos",
+      "gecos": "John Doe",
+      "displayName": "Bos Doe",
+      "sambaAcctFlags": "[U          ]",
+      "dn": "uid=bos,ou=People,dc=example,dc=com",
+      "changes": {}
+    },
+    "ad": {
+      "cn": "Bøs Doe",
+      "sn": "Doe",
+      "c": "GB",
+      "givenName": "Bøs",
+      "displayName": "Bøs Doe",
+      "userAccountControl": 512,
+      "sAMAccountName": "bos",
+      "mail": "bos@example.com",
+      "loginShell": [],
+      "uid": [],
+      "gecos": "Bøs Wrong",
+      "gidNumber": [],
+      "unixHomeDirectory": [],
+      "uidNumber": [],
+      "dn": "CN=Bøs Doe,OU=Users,OU=User Accounts,OU=Company,DC=Example,DC=com", # yamllint disable-line
+      "changes": {}
+    }
+  },
+  "adam.addar": {
+    "ad": {
+      "cn": "Al ",
+      "sn": "Addar",
+      "c": "GB",
+      "givenName": "Al",
+      "displayName": "Al Addar",
+      "userAccountControl": 512,
+      "sAMAccountName": "adam.addar",
+      "mail": "adam.addar@example.com",
+      "gecos": [],
+      "gidNumber": [],
+      "loginShell": [],
+      "uid": [],
+      "uidNumber": [],
+      "unixHomeDirectory": [],
+      "dn": "CN=Al Addar,OU=Users,OU=User Accounts,OU=Company,DC=Example,DC=com", # yamllint disable-line
+      "changes": {}
+    }
+  },
+  "adama": {
+    "openldap": {
+      "uid": "adama",
+      "cn": ["Adam Addar"],
+      "givenName": ["Adam"],
+      "sn": ["Addar"],
+      "loginShell": "/bin/bash",
+      "uidNumber": 690,
+      "gidNumber": 501,
+      "homeDirectory": "/home/adama",
+      "gecos": "Adam Addar",
+      "mail": ["adama@example.com"],
+      "displayName": "Adam Addar",
+      "sambaAcctFlags": "[U          ]",
+      "dn": "uid=adama,ou=People,dc=example,dc=com",
+      "changes": {}
+    }
+  },
+  "test.user1": {
+    "ad": {
+      "cn": "Test User1",
+      "sn": "User1",
+      "c": "GB",
+      "givenName": "Test",
+      "displayName": "Test User1",
+      "userAccountControl": 512,
+      "sAMAccountName": "test.user1",
+      "mail": "test.user1@example.com",
+      "gecos": [],
+      "gidNumber": [],
+      "loginShell": [],
+      "uid": [],
+      "uidNumber": [],
+      "unixHomeDirectory": [],
+      "dn": "CN=Test User1,OU=Users,OU=User Accounts,OU=Company,DC=Example,DC=com", # yamllint disable-line
+      "changes": {}
+    }
+  },
+  "test.user2": {
+    "ad": {
+      "cn": "Test User2",
+      "sn": "User2",
+      "c": "GB",
+      "givenName": "Test",
+      "displayName": "Test User2",
+      "userAccountControl": 512,
+      "sAMAccountName": "test.user2",
+      "mail": "test.user2@example.com",
+      "gecos": [],
+      "gidNumber": [],
+      "loginShell": [],
+      "uid": [],
+      "uidNumber": [],
+      "unixHomeDirectory": [],
+      "dn": "CN=Test User2,OU=Users,OU=User Accounts,OU=Company,DC=Example,DC=com", # yamllint disable-line
+      "changes": {}
+    }
+  },
+  "randomuser": {
+    "ad": {
+      "cn": "Random User",
+      "sn": "User",
+      "c": "GB",
+      "givenName": "Random",
+      "displayName": "Random User",
+      "userAccountControl": 512,
+      "sAMAccountName": "randomuser",
+      "mail": "randomuser@example.com",
+      "gecos": [],
+      "gidNumber": [],
+      "loginShell": [],
+      "uid": [],
+      "uidNumber": [],
+      "unixHomeDirectory": [],
+      "dn": "CN=Random User,OU=Users,OU=User Accounts,OU=Company,DC=Example,DC=com", # yamllint disable-line
+      "changes": {}
+    }
+  },
+  "johnd": {
+    "openldap": {
+      "uid": "johnd",
+      "cn": "John Doe",
+      "givenName": "John",
+      "sn": "Doe",
+      "mail": "johnd@example.com",
+      "loginShell": "/bin/bash",
+      "uidNumber": 4567,
+      "gidNumber": 501,
+      "homeDirectory": "/home/johnd",
+      "gecos": "John Doe",
+      "displayName": "John Doe",
+      "sambaAcctFlags": "[U          ]",
+      "dn": "uid=johnd,ou=People,dc=example,dc=com",
+      "changes": {}
+    },
+    "ad": {
+      "cn": "John Doe",
+      "sn": "Doe",
+      "c": "GB",
+      "givenName": "John",
+      "displayName": "John Doe",
+      "userAccountControl": 512,
+      "sAMAccountName": "johnd",
+      "mail": "johnd@example.com",
+      "loginShell": "",
+      "uid": "",
+      "gecos": "",
+      "gidNumber": "",
+      "unixHomeDirectory": "",
+      "uidNumber": "",
+      "dn": "CN=John Doe,OU=Users,OU=User Accounts,OU=Company,DC=Example,DC=com", # yamllint disable-line
+      "changes": {}
+    }
+  },
+  "janed": {
+    "openldap": {
+      "uid": "janed",
+      "cn": "Jane Doe",
+      "givenName": "Jane",
+      "sn": "Doe",
+      "mail": "janed@example.com",
+      "loginShell": "/bin/bash",
+      "uidNumber": 1234,
+      "gidNumber": 501,
+      "homeDirectory": "/home/janed",
+      "gecos": "Jane Doe",
+      "displayName": "Jane Doe",
+      "sambaAcctFlags": "[U          ]",
+      "dn": "uid=janed,ou=People,dc=example,dc=com",
+      "changes": {}
+    },
+    "ad": {
+      "cn": "Jane Doe",
+      "sn": "Doe",
+      "c": "GB",
+      "givenName": "Jane",
+      "displayName": "Jane Doe",
+      "userAccountControl": 512,
+      "sAMAccountName": "janed",
+      "mail": "janed@example.com",
+      "loginShell": "",
+      "uid": "",
+      "gecos": "",
+      "gidNumber": "",
+      "unixHomeDirectory": "",
+      "uidNumber": "",
+      "dn": "CN=Jane Doe,OU=Users,OU=User Accounts,OU=Company,DC=Example,DC=com", # yamllint disable-line
+      "changes": {}
+    }
+  }
+}

@@ -1,0 +1,19 @@
+---
+openldap;
+  server: "thing"
+  port: 1234
+  get_info: "ALL"
+  ciphers: "ALL"
+  ssl:
+    enabled: true
+    validate: "CERT_NONE"
+    version: "PROTOCOL_TLSv1"
+  bind_user: "uid=something,ou=People,dc=example,dc=com"
+  bind_pass: "somepass"
+  schema:
+    base: "dc=example,dc=com"
+    mounts: "ou=Mounts"
+    users: "ou=People"
+    objects:
+      user:
+        name: "uid"

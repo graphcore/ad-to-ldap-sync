@@ -1,0 +1,145 @@
+---
+settings:
+  small_group_blind_update: 15
+  total_change_threshold: 50
+  deletions_change_threshold: 30
+  additions_change_threshold: 30
+  exception_file: 'config/exceptions.yaml'
+  country_control_file: 'config/country_control.yaml'
+  monitoring_log_file: "test_monitoring.log"
+  manifest_path: 'manifest_file.log'
+  log_file: "test_ad-to-ldap-sync.log"
+  log_file_level: "DEBUG"
+  special_password_characters: "%!#."
+  banned_password_chars: "lI01O"
+  password_length: 12
+  # https://jackstromberg.com/2013/01/useraccountcontrol-attributeflag-values/
+  ms_ad_active_account_ids:
+    - 512
+    - 544
+    - 66048
+    - 262656
+openldap:
+  server: "openldap-thing"
+  port: 1234
+  get_info: "ALL"
+  ciphers: "ALL"
+  ssl:
+    enabled: true
+    validate: "CERT_NONE"  # CERT_REQUIRED
+    version: "PROTOCOL_TLSv1_2"
+    # ca_cert: "config/ca.cert"
+  bind_user: "cn=something,dc=office,dc=example,dc=com"
+  bind_pass: "somepass"
+  schema:
+    sid_prefix: "S-some_SID"
+    base: "dc=office,dc=example,dc=com"
+    users: "ou=People"
+    groups: "ou=Group"
+    user_sync_ous:
+      - "ou=People"
+    remote_synced_attrs:
+      "sambaAcctFlags": "c"  # contrived example
+      "uidNumber": "uidNumber"
+      "gidNumber": "gidNumber"
+      "loginShell": "loginShell"
+      "homeDirectory": "unixHomeDirectory"
+      "uid": "uid"
+    not_synced_attrs:
+      - "sambaAcctFlags"
+      - 'sambaSid'
+      - 'sshPublicKey'
+      - 'objectClass'
+    local_copy_attrs:
+      "homeDirectory": "sambaAcctFlags"  # contrived example
+    disable_user_mask:
+      "loginShell": "/sbin/nologin"
+      "sambaAcctFlags": "[DU         ]"
+      'sshPublicKey': 'non valid public ssh key'
+    enable_user_mask:
+      "loginShell": "/bin/bash"
+      "sambaAcctFlags": "[U          ]"
+      'sshPublicKey': 'non valid public ssh key'
+    new_group:
+      min_member_number: 1100
+      mask:
+        'objectClass':
+          - 'posixGroup'
+          - 'top'
+        'attributes':
+          'description': 'Managed in AD. Do not update in OpenLDAP'
+    new_user:
+      min_member_number: 2000
+      mask:
+        "objectClass":
+          - "inetOrgPerson"
+          - "posixAccount"
+          - "ldapPublicKey"
+          - "organizationalPerson"
+          - "person"
+          - "sambaSamAccount"
+          - "top"
+        "attributes":
+          "uid": "all_users[user]['ad']['uid']"
+          "loginShell": "/bin/bash"
+          "sambaAcctFlags": "[U          ]"
+          "cn": "NEW USER"
+          "gidNumber": 501
+          "sn": "USER"
+          "mail": "newuser@example.com"
+          "displayName": "NEW USER"
+          "givenName": "NEW"
+          "gecos": "NEW USER"
+    objects:
+      user:
+        name: "uid"
+        obj_class: "posixAccount"
+        sid: "sambaSID"
+        uid_number: "uidNumber"
+      group:
+        name: "cn"
+        obj_class: "posixGroup"
+        gid_number: "gidNumber"
+        members: "memberUid"
+ad:
+  server: "ad-thing"
+  port: 636
+  get_info: "ALL"
+  ciphers: "ALL"
+  ssl:
+    enabled: true
+    validate: "CERT_NONE"
+    version: "PROTOCOL_TLSv1_2"
+  bind_user: "cn=svc-svc,ou=Service Accounts,ou=User Accounts,ou=Example,dc=example,dc=com" # yamllint disable-line
+  bind_pass: "123123123123"
+  schema:
+    base: "dc=example,dc=com"
+    users: "ou=Example"
+    groups: "ou=Linux,ou=Groups,ou=Example"
+    user_sync_ous:
+      - "ou=Users,ou=User Accounts,ou=Example"
+      - "ou=Disabled Accounts,ou=User Accounts,ou=Example"
+      - "ou=Service Accounts,ou=User Accounts,ou=Example"
+      # - "ou=Users,ou=Administratation"
+    remote_synced_attrs:
+      "cn": "cn"
+      "displayName": "displayName"
+      "mail": "mail"
+      "sn": "sn"
+      "givenName": "givenName"
+      "gecos": "gecos"
+    not_synced_attrs:
+      - "userAccountControl"
+      - "sAMAccountName"
+      - "c"  # Country code
+    local_copy_attrs:
+      "displayName": "gecos"
+    objects:
+      user:
+        name: "sAMAccountName"
+        obj_class: "person"
+      group:
+        name: "cn"
+        obj_class: "group"
+        gid_number: "gidNumber"
+        members: "member"
