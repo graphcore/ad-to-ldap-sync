@@ -3,3 +3,4 @@ pyasn1
 pyyaml
 unidecode
 loguru
+
