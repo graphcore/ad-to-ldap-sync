@@ -4,6 +4,9 @@ settings:
   total_change_threshold: 50
   deletions_change_threshold: 30
   additions_change_threshold: 30
+  email_for_password_notifications: 'email@example.com'
+  email_server: 'localhost'
+  email_port: 25
   exception_file: 'config/exceptions.yaml'
   country_control_file: 'config/country_control.yaml'
   monitoring_log_file: 'monitoring.log'

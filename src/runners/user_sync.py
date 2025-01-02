@@ -8,6 +8,8 @@ import string
 import sys
 import copy
 import utils.utilities as Utilities
+import smtplib
+from email.mime.text import MIMEText
 from ldap3 import (
     Connection,
     MODIFY_REPLACE,
@@ -51,6 +53,27 @@ class AdLdapUserSync:
         self.basic_config = basic_config
         self.ldap_connections = ldap_connections
         self._main()
+
+    def _email_password(self, user: str, password: str) -> None:
+        smtp_server = self.basic_config["config"]["settings"]["email_server"]
+        smtp_port = self.basic_config["config"]["settings"]["email_port"]
+        recipient_email = self.basic_config["config"]["settings"]["email_for_password_notifications"]
+        sender_email = recipient_email
+        subject = f"AD-LDAP Auto-password change notification for {user}"
+        body = f"""
+The password for {user} has been automatically reset by the ad-to-ldap-sync process. The new password is:
+
+{password}
+
+Good luck!
+"""
+        message = MIMEText(body)
+        message['From'] = sender_email
+        message['To'] = recipient_email
+        message['Subject'] = subject
+
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.sendmail(sender_email, recipient_email, message.as_string())
 
     def _get_user_attributes(self) -> dict[str, list[str]]:
         """Get the relevant user attributes.
@@ -278,6 +301,8 @@ class AdLdapUserSync:
         6JQMApbY%sQc
         """
         password = self._generate_password()
+
+        self._email_password(user, password)
 
         for password_type in password_types:
             if password_type == "userPassword":  # nosec B105
