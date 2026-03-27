@@ -104,6 +104,25 @@ class LdapInterface:
         """
         raise NotImplementedError
 
+    def paged_search(
+        self,
+        search_base: str,
+        search_filter: str,
+        search_scope: Any = SUBTREE,
+        dereference_aliases: Any = DEREF_ALWAYS,
+        attributes: Any = None,
+        size_limit: int = 0,
+        time_limit: int = 0,
+        types_only: bool = False,
+        get_operational_attributes: bool = False,
+        controls: Any = None,
+        paged_size: int = 100,
+        paged_criticality: bool = False,
+        generator: bool = True,
+    ) -> Any:
+        """Run a paged search via ldap3's standard extension API."""
+        raise NotImplementedError
+
     def compare(
         self, dn: str, attribute: str, value: str, controls: Any = None
     ) -> None:
@@ -223,6 +242,27 @@ class LdapWrapper(LdapInterface):
             }
         )
 
+    def paged_search(
+        self,
+        search_base: str,
+        search_filter: str,
+        search_scope: Any = SUBTREE,
+        dereference_aliases: Any = DEREF_ALWAYS,
+        attributes: Any = None,
+        size_limit: int = 0,
+        time_limit: int = 0,
+        types_only: bool = False,
+        get_operational_attributes: bool = False,
+        controls: Any = None,
+        paged_size: int = 100,
+        paged_criticality: bool = False,
+        generator: bool = True,
+    ) -> Any:
+        """Run a paged search via ldap3's standard extension API."""
+        kwargs = copy.copy(locals())
+        kwargs.pop("self")
+        return self.ldap_connection.extend.standard.paged_search(**kwargs)
+
 
 class NoOp(LdapInterface):
     """No-operation class for the LDAP connection."""
@@ -311,3 +351,24 @@ class NoOp(LdapInterface):
             "referrals": None,
             "type": "modifyResponse",
         }
+
+    def paged_search(
+        self,
+        search_base: str,
+        search_filter: str,
+        search_scope: Any = SUBTREE,
+        dereference_aliases: Any = DEREF_ALWAYS,
+        attributes: Any = None,
+        size_limit: int = 0,
+        time_limit: int = 0,
+        types_only: bool = False,
+        get_operational_attributes: bool = False,
+        controls: Any = None,
+        paged_size: int = 100,
+        paged_criticality: bool = False,
+        generator: bool = True,
+    ) -> Any:
+        """Delegate paged searches to the bound connection."""
+        kwargs = copy.copy(locals())
+        kwargs.pop("self")
+        return self.ldap_connection.extend.standard.paged_search(**kwargs)

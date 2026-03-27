@@ -5,6 +5,7 @@ from ldap3 import (
     MODIFY_DELETE,
     MODIFY_REPLACE,
     SUBTREE,
+    utils,
 )
 import copy
 import sys
