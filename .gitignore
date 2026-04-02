@@ -3,6 +3,8 @@
 *.log
 *config.yml
 *config.yaml
+country_control.yaml
+exceptions.yaml
 !tests/data/test*
 settings.json
 

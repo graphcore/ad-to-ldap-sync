@@ -129,6 +129,36 @@ Good luck!
             )
         return user_attributes
 
+    def _search_users(
+        self,
+        server_type: str,
+        base: str,
+        filter_string: str,
+        attributes: list[str],
+    ) -> list[dict[str, Any]]:
+        """Search for users and transparently page AD results.
+
+        AD often enforces a server-side size limit of 1000 objects on an
+        unpaged search. Use paged searches for AD so large sync OUs are fully
+        enumerated while leaving the OpenLDAP behavior unchanged.
+        """
+        connection: Connection = self.ldap_connections[server_type]
+        if server_type == "ad":
+            paged_results = connection.paged_search(
+                search_base=base,
+                search_filter=filter_string,
+                attributes=attributes,
+                paged_size=1000,
+                generator=False,
+            )
+            return [
+                entry
+                for entry in paged_results
+                if entry.get("type") == "searchResEntry"
+            ]
+        connection.search(base, filter_string, attributes=attributes)
+        return connection.response
+
     def _get_all_users(self) -> None:
         """Get users from both MS AD and OpenLDAP based on a specific OU.
 
@@ -169,15 +199,16 @@ Good luck!
                 user_filter_string = (
                     f"(objectclass={server_base['objects']['user']['obj_class']})"
                 )
-                connection.search(
+                search_results = self._search_users(
+                    server_type,
                     user_base_string,
                     user_filter_string,
-                    attributes=user_attributes[server_type],
+                    user_attributes[server_type],
                 )
                 logger.debug(
-                    f"Users in {server_type}/{sync_ou}: {len(connection.response)}"
+                    f"Users in {server_type}/{sync_ou}: {len(search_results)}"
                 )
-                for entry in connection.response:
+                for entry in search_results:
                     _user = "".join(
                         entry["attributes"][primary_keys[server_type]]
                     ).lower()

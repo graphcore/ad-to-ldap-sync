@@ -5,6 +5,7 @@ from ldap3 import (
     MODIFY_DELETE,
     MODIFY_REPLACE,
     SUBTREE,
+    utils,
 )
 import copy
 import sys
@@ -191,7 +192,7 @@ class AdLdapGroupSync:
         connection: Connection = self.ldap_connections[server_type]
         config: dict[str, Any] = self.basic_config["config"]
         user_base_string = self._determine_user_base(config, server_type, user_base)
-        user_filter_string = f"(&(objectclass={config[f'{server_type}']['schema']['objects']['user']['obj_class']})({user_name}))"  # noqa ignore long line
+        user_filter_string = f"(&(objectclass={config[f'{server_type}']['schema']['objects']['user']['obj_class']})({utils.conv.escape_filter_chars(user_name)}))"  # noqa ignore long line
         connection.search(user_base_string, user_filter_string, attributes=["*"])
         return connection.response
 
@@ -543,7 +544,7 @@ class AdLdapGroupSync:
         connection: Connection = self.ldap_connections["ad"]
         attributes = ["objectClass"]
         base_string = self.basic_config["config"]["ad"]["schema"]["base"]
-        filter_string = f"(distinguishedName={ad_object})"
+        filter_string = f"(distinguishedName={utils.conv.escape_filter_chars(ad_object)})"
         if filter_string in self.object_lookup_cache:
             response = self.object_lookup_cache[filter_string]
         else:

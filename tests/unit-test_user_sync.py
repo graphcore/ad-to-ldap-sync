@@ -258,6 +258,64 @@ class TestUserSync:
         AdLdapUserSync._get_all_users(self.mocked_obj)
         assert expected_all_users == self.mocked_obj.all_users
 
+    def test_search_users_ad_uses_paging(self) -> None:
+        paged_results = [
+            {
+                "dn": "CN=John Doe,OU=Users,OU=Company,DC=example,DC=com",
+                "attributes": {"sAMAccountName": ["johnd"]},
+                "type": "searchResEntry",
+            },
+            {
+                "type": "searchResRef",
+            },
+        ]
+        self.mocked_obj.ldap_connections[
+            "ad"
+        ].extend.standard.paged_search = MagicMock(return_value=paged_results)
+
+        returned_value = AdLdapUserSync._search_users(
+            self.mocked_obj,
+            "ad",
+            "ou=Users,dc=example,dc=com",
+            "(objectclass=person)",
+            ["sAMAccountName"],
+        )
+
+        assert returned_value == [paged_results[0]]
+        self.mocked_obj.ldap_connections[
+            "ad"
+        ].extend.standard.paged_search.assert_called_with(
+            "ou=Users,dc=example,dc=com",
+            "(objectclass=person)",
+            attributes=["sAMAccountName"],
+            paged_size=1000,
+            generator=False,
+        )
+
+    def test_search_users_openldap_uses_plain_search(self) -> None:
+        search_results = [
+            {
+                "dn": "uid=johnd,ou=People,dc=example,dc=com",
+                "attributes": {"uid": ["johnd"]},
+            }
+        ]
+        self.mocked_obj.ldap_connections["openldap"].response = search_results
+
+        returned_value = AdLdapUserSync._search_users(
+            self.mocked_obj,
+            "openldap",
+            "ou=People,dc=example,dc=com",
+            "(objectclass=posixAccount)",
+            ["uid"],
+        )
+
+        assert returned_value == search_results
+        self.mocked_obj.ldap_connections["openldap"].search.assert_called_with(
+            "ou=People,dc=example,dc=com",
+            "(objectclass=posixAccount)",
+            attributes=["uid"],
+        )
+
     def test_attr_ascii_compare_openldap(self) -> None:
         all_users = yaml.safe_load(open("tests/data/all_test_users.yaml", "r"))
         self.mocked_obj.all_users = all_users
