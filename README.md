@@ -195,14 +195,17 @@ The binary will be located with the same name in the `dist/` directory.
 
 ## TODO
 
+### Known issues
+
+-   Move static values out of code into config
+
 ### New feature(s)
 
+-   Add pagination to group sync
+
+-   Check pagination limit on AD and implement as rquired
+
 -   Email user with link to Password reset page (in check_change) (Future)
-
--   Cope with large LDAP queries, and pagination (Future)
-
--   If the AD object in a group is itself a group, recursively descend and build
-    full member list. (soonish)
 
 -   Set recursion limit based on len(called_groups) and config file in
     _flatten_nested_group
@@ -212,13 +215,20 @@ The binary will be located with the same name in the `dist/` directory.
 
 -   Need integration testing for adding multiple users at once.
 
--   Duplicate duplicate duplicate code between user and group sync
+-   De-duplicate code between user and group sync
 
 -   Clean up unit tests so they don't leave log files behind.
 
 -   Ensure 100% code coverage for unit tests.
 
 -   Create integration tests for user_sync.
+
+-   Do not email password changes in noop mode.
+
+-   Sort out log paths and prefix / suffix issues.
+
+-   Think about passwords in the case when LDAP no longer stores primary
+    passwords. AD password passthrough.
 
 ### Testing
 
