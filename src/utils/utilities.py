@@ -40,7 +40,7 @@ def write_monitoring_log(
 def fill_array_gaps(numbers: list[int], offset: int) -> int:
     """Find a gap in an unsorted array of numbers with regards to the offset.
 
-    Given a list of [200, 202, 190, 201, 204] and an offset of 200, return 202.
+    Given a list of [200, 202, 190, 201, 204] and an offset of 200, return 203.
 
     If there are no gaps, the highest value + 1 will be returned so long as
     said value is greater than the offset.

@@ -65,9 +65,9 @@ class ManageParser:
             default=False,
             action="store_true",
             help=(
-                "!!! WARNING !!!"
-                "Modifies ALL groups regardless of override requirements."
-                "Please consider using '--group' for specific group overrides."
+                "!!! WARNING !!! "
+                "Modifies ALL groups regardless of override requirements. "
+                "Please consider using '--group_override' for specific group overrides."
             ),
         )
 
